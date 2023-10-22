@@ -88,7 +88,7 @@ fn render_cube() {
             for px in row { 
                 print!("{}", px);
             }
-            print!("\n");
+            println!();
         }
         println!("\x1b[H"); // Return to the HOME offset in the terminal.
 
