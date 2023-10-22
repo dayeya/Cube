@@ -69,7 +69,6 @@ impl Rotation for Vector {
             .and_then(|vec| Some(vec.rotate_y(y_theta)))
             .and_then(|vec| Some(vec.rotate_z(z_theta))).unwrap();
 
-
         // change the vectors position.
         self.x = rotated_vector.x;
         self.y = rotated_vector.y;
