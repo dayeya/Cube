@@ -66,59 +66,31 @@ fn parse_surface(
 }
 
 fn render_cube() {
-
     let mut output_buffer: Vec<Vec<char>> = vec![vec![BG_CHAR; WIDTH]; HEIGHT]; // Output on the screen.
     let mut depth_checker: Vec<Vec<i32>> = vec![vec![0; WIDTH]; HEIGHT]; // Z buffer.
     let mut rotation_angles: [f32; 3] = [X, Y, Z];
 
     loop {
-        
-        // Parse every surface into the output buffer. 
+        // Parse all 6 sides of the cube into the buffer.
         for cube_x in -CUBE_LEN..CUBE_LEN {
-
             for cube_y in -CUBE_LEN..CUBE_LEN {
-                
-                parse_surface(cube_x, cube_y, -CUBE_LEN, rotation_angles,'~',
-                    depth_checker.clone(),
-                    &mut output_buffer, 
-                );
-
-                parse_surface(-cube_x, cube_y, CUBE_LEN, rotation_angles,'*',
-                depth_checker.clone(),
-                &mut output_buffer, 
-                );
-
-                parse_surface(CUBE_LEN, cube_y, cube_x, rotation_angles,'+',
-                depth_checker.clone(),
-                &mut output_buffer, 
-                );
-
-                parse_surface(-CUBE_LEN, cube_y, -cube_x, rotation_angles,'^',
-                depth_checker.clone(),
-                &mut output_buffer, 
-                );
-
-                parse_surface(cube_x, -CUBE_LEN, -cube_y, rotation_angles,'!',
-                depth_checker.clone(),
-                &mut output_buffer, 
-                );
-
-                parse_surface(cube_x, CUBE_LEN, cube_y, rotation_angles,'.',
-                depth_checker.clone(),
-                &mut output_buffer, 
-                );
+                parse_surface(cube_x, cube_y, -CUBE_LEN, rotation_angles,'~', depth_checker.clone(), &mut output_buffer);
+                parse_surface(-cube_x, cube_y, CUBE_LEN, rotation_angles,'*',depth_checker.clone(), &mut output_buffer);
+                parse_surface(CUBE_LEN, cube_y, cube_x, rotation_angles,'+', depth_checker.clone(), &mut output_buffer);
+                parse_surface(-CUBE_LEN, cube_y, -cube_x, rotation_angles,'^', depth_checker.clone(), &mut output_buffer);
+                parse_surface(cube_x, -CUBE_LEN, -cube_y, rotation_angles,'!', depth_checker.clone(), &mut output_buffer);
+                parse_surface(cube_x, CUBE_LEN, cube_y, rotation_angles,'.', depth_checker.clone(), &mut output_buffer);
             }
         }
 
+        // Plot the buffer.
         for y in 0..HEIGHT {
             for x in 0..WIDTH { 
                 print!("{}", output_buffer[y][x]);
             }
             print!("\n");
         }
-
-        // return to the top.
-        println!("\x1b[H");
+        println!("\x1b[H"); // Return to the HOME offset in the terminal.
 
         // Inc the angles.
         rotation_angles[0] += SPEED;
@@ -134,7 +106,7 @@ fn render_cube() {
 }
 
 fn main() {
-    // start animation.
+    // Start animation.
     println!("\x1b[2J\r\x1b[H");
     render_cube();
 }
