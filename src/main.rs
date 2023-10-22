@@ -1,27 +1,25 @@
-// Cube rotation code 
+// Cube rotation code in rust.
 
 pub mod vec; 
 use crate::vec::{Vector, Rotation};
-
 use std::time::Duration;
 
-// costumizable CONSTS.
+// cube parameters.
 const SPEED: f32 = 0.05;
 const BG_CHAR: char = ' '; 
 const CUBE_LEN: i32 = 15;
-
-// points calc CONSTS.
 const CUBE_DISTANCE: f32 = 60.; // K2
 const SCREEN_DISTANCE: f32 = 40.; // K1
 
+// angles of rotation on each axis.
 const X: f32 = 0.;
 const Y: f32 = 0.;
 const Z: f32 = 0.;
 
+// terminal and rendering.
 const WIDTH: usize = 160;
 const HEIGHT: usize = 44;
 const FRAME_DELAY: u64 = 10;
-
 
 fn parse_surface(
     cube_x: i32,
@@ -49,9 +47,11 @@ fn parse_surface(
     let w_offset = (WIDTH as usize) as f32 / 2.;
     let h_offset = (HEIGHT as usize) as f32 / 2.;
 
-    // calc needed arguments.
+    // Calc one over Z.
     let ooz: f32 = 1.0 / (CUBE_DISTANCE + current_vec.z);
-    let xp: usize = (w_offset + SCREEN_DISTANCE * ooz * current_vec.x * 2.) as usize; // * 2. because width of char is smaller than its height.
+
+    // xp is multiplied by 2. since the width of any char is smaller than its height.
+    let xp: usize = (w_offset + SCREEN_DISTANCE * ooz * current_vec.x * 2.) as usize; 
     let yp: usize = (h_offset + SCREEN_DISTANCE * ooz * current_vec.y) as usize;
 
     if xp >= WIDTH || yp >= HEIGHT { 
@@ -59,26 +59,21 @@ fn parse_surface(
     };
 
     if ooz > z_buffer[yp][xp] as f32 { 
-
-        // update the Z buffer.
+        // Update the Z-buffer and plot the point.
         z_buffer[yp][xp] = ooz as i32;
-
-        // set the luminace of the point.
         outpuf_buffer[yp][xp] = ch;
-
     }
-
 }
 
 fn render_cube() {
 
-    let mut output_buffer: Vec<Vec<char>> = vec![vec![BG_CHAR; WIDTH]; HEIGHT]; // output on the screen.
-    let mut depth_checker: Vec<Vec<i32>> = vec![vec![0; WIDTH]; HEIGHT]; // z buffer.
+    let mut output_buffer: Vec<Vec<char>> = vec![vec![BG_CHAR; WIDTH]; HEIGHT]; // Output on the screen.
+    let mut depth_checker: Vec<Vec<i32>> = vec![vec![0; WIDTH]; HEIGHT]; // Z buffer.
     let mut rotation_angles: [f32; 3] = [X, Y, Z];
 
     loop {
-
-        // parse every surface into the output buffer. 
+        
+        // Parse every surface into the output buffer. 
         for cube_x in -CUBE_LEN..CUBE_LEN {
 
             for cube_y in -CUBE_LEN..CUBE_LEN {
@@ -112,7 +107,6 @@ fn render_cube() {
                 depth_checker.clone(),
                 &mut output_buffer, 
                 );
-
             }
         }
 
@@ -126,15 +120,14 @@ fn render_cube() {
         // return to the top.
         println!("\x1b[H");
 
-        // inc the angles.
+        // Inc the angles.
         rotation_angles[0] += SPEED;
         rotation_angles[1] += SPEED;
         rotation_angles[2] += SPEED;
 
-        // renew buffers. 
+        // Renew buffers. 
         output_buffer = vec![vec![BG_CHAR; WIDTH]; HEIGHT]; 
         depth_checker = vec![vec![0; WIDTH]; HEIGHT];
-
         std::thread::sleep(Duration::from_millis(FRAME_DELAY));
     }
 
