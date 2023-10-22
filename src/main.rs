@@ -84,9 +84,9 @@ fn render_cube() {
         }
 
         // Plot the buffer.
-        for y in 0..HEIGHT {
-            for x in 0..WIDTH { 
-                print!("{}", output_buffer[y][x]);
+        for row in &output_buffer {
+            for px in row { 
+                print!("{}", px);
             }
             print!("\n");
         }
