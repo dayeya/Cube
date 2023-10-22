@@ -85,7 +85,7 @@ fn render_cube() {
                 parse_surface(v1, rotation_angles, '~', &mut depth_checker, &mut output_buffer);
                 parse_surface(v2, rotation_angles, '+', &mut depth_checker, &mut output_buffer);
                 parse_surface(v3, rotation_angles, '^', &mut depth_checker, &mut output_buffer);
-                parse_surface(v4, rotation_angles, '*',&mut depth_checker, &mut output_buffer);
+                parse_surface(v4, rotation_angles, '*', &mut depth_checker, &mut output_buffer);
                 parse_surface(v5, rotation_angles, '!', &mut depth_checker, &mut output_buffer);
                 parse_surface(v6, rotation_angles, '.', &mut depth_checker, &mut output_buffer);
             }
