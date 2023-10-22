@@ -75,9 +75,9 @@ fn render_cube() {
         for cube_x in -CUBE_LEN..CUBE_LEN {
             for cube_y in -CUBE_LEN..CUBE_LEN {
                 parse_surface(cube_x, cube_y, -CUBE_LEN, rotation_angles,'~', depth_checker.clone(), &mut output_buffer);
-                parse_surface(-cube_x, cube_y, CUBE_LEN, rotation_angles,'*',depth_checker.clone(), &mut output_buffer);
                 parse_surface(CUBE_LEN, cube_y, cube_x, rotation_angles,'+', depth_checker.clone(), &mut output_buffer);
                 parse_surface(-CUBE_LEN, cube_y, -cube_x, rotation_angles,'^', depth_checker.clone(), &mut output_buffer);
+                parse_surface(-cube_x, cube_y, CUBE_LEN, rotation_angles,'*',depth_checker.clone(), &mut output_buffer);
                 parse_surface(cube_x, -CUBE_LEN, -cube_y, rotation_angles,'!', depth_checker.clone(), &mut output_buffer);
                 parse_surface(cube_x, CUBE_LEN, cube_y, rotation_angles,'.', depth_checker.clone(), &mut output_buffer);
             }
