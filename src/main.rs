@@ -19,40 +19,32 @@ const Z: f32 = 0.;
 // terminal and rendering.
 const WIDTH: usize = 160;
 const HEIGHT: usize = 44;
-const FRAME_DELAY: u64 = 10;
+const FRAME_DELAY: u64 = 50;
 
 fn parse_surface(
-    cube_x: i32,
-    cube_y: i32,
-    cube_z: i32,
+    mut origin_vector: Vector,
     angles: [f32; 3],
     ch: char, 
-    mut z_buffer: Vec<Vec<i32>>,
+    z_buffer: &mut Vec<Vec<i32>>,
     outpuf_buffer: &mut Vec<Vec<char>> 
 ) 
 {
     let x_theta = angles[0];
     let y_theta = angles[1];
     let z_theta = angles[2];
-    
-    let mut current_vec: Vector = Vector {
-        x: cube_x as f32, 
-        y: cube_y as f32,  
-        z: cube_z as f32 
-    };
 
     // rotate the vector.
-    current_vec.rotate_all(x_theta, y_theta, z_theta);  
+    origin_vector.rotate_all(x_theta, y_theta, z_theta);  
 
     let w_offset = (WIDTH as usize) as f32 / 2.;
     let h_offset = (HEIGHT as usize) as f32 / 2.;
 
     // Calc one over Z.
-    let ooz: f32 = 1.0 / (CUBE_DISTANCE + current_vec.z);
+    let ooz: f32 = 1.0 / (CUBE_DISTANCE + origin_vector.z);
 
     // xp is multiplied by 2. since the width of any char is smaller than its height.
-    let xp: usize = (w_offset + SCREEN_DISTANCE * ooz * current_vec.x * 2.) as usize; 
-    let yp: usize = (h_offset + SCREEN_DISTANCE * ooz * current_vec.y) as usize;
+    let xp: usize = (w_offset + SCREEN_DISTANCE * ooz * origin_vector.x * 2.) as usize; 
+    let yp: usize = (h_offset + SCREEN_DISTANCE * ooz * origin_vector.y) as usize;
 
     if xp >= WIDTH || yp >= HEIGHT { 
         return 
@@ -70,16 +62,32 @@ fn render_cube() {
     let mut depth_checker: Vec<Vec<i32>> = vec![vec![0; WIDTH]; HEIGHT]; // Z buffer.
     let mut rotation_angles: [f32; 3] = [X, Y, Z];
 
+    // Origin Vectors.
+    let mut v1: Vector;
+    let mut v2: Vector;
+    let mut v3: Vector;
+    let mut v4: Vector;
+    let mut v5: Vector;
+    let mut v6: Vector;
+
     loop {
         // Parse all 6 sides of the cube into the buffer.
         for cube_x in -CUBE_LEN..CUBE_LEN {
             for cube_y in -CUBE_LEN..CUBE_LEN {
-                parse_surface(cube_x, cube_y, -CUBE_LEN, rotation_angles,'~', depth_checker.clone(), &mut output_buffer);
-                parse_surface(CUBE_LEN, cube_y, cube_x, rotation_angles,'+', depth_checker.clone(), &mut output_buffer);
-                parse_surface(-CUBE_LEN, cube_y, -cube_x, rotation_angles,'^', depth_checker.clone(), &mut output_buffer);
-                parse_surface(-cube_x, cube_y, CUBE_LEN, rotation_angles,'*',depth_checker.clone(), &mut output_buffer);
-                parse_surface(cube_x, -CUBE_LEN, -cube_y, rotation_angles,'!', depth_checker.clone(), &mut output_buffer);
-                parse_surface(cube_x, CUBE_LEN, cube_y, rotation_angles,'.', depth_checker.clone(), &mut output_buffer);
+
+                v1 = Vector {x:    cube_x as f32, y:    cube_y as f32, z: -CUBE_LEN as f32 };
+                v2 = Vector {x:  CUBE_LEN as f32, y:    cube_y as f32, z:    cube_x as f32 };
+                v3 = Vector {x: -CUBE_LEN as f32, y:    cube_y as f32, z:   -cube_x as f32 };
+                v4 = Vector {x:   -cube_x as f32, y:    cube_y as f32, z:  CUBE_LEN as f32 };
+                v5 = Vector {x:    cube_x as f32, y: -CUBE_LEN as f32, z:   -cube_y as f32 };
+                v6 = Vector {x:    cube_x as f32, y:  CUBE_LEN as f32, z:    cube_y as f32 };
+
+                parse_surface(v1, rotation_angles, '~', &mut depth_checker, &mut output_buffer);
+                parse_surface(v2, rotation_angles, '+', &mut depth_checker, &mut output_buffer);
+                parse_surface(v3, rotation_angles, '^', &mut depth_checker, &mut output_buffer);
+                parse_surface(v4, rotation_angles, '*',&mut depth_checker, &mut output_buffer);
+                parse_surface(v5, rotation_angles, '!', &mut depth_checker, &mut output_buffer);
+                parse_surface(v6, rotation_angles, '.', &mut depth_checker, &mut output_buffer);
             }
         }
 
