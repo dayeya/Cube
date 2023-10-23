@@ -61,15 +61,7 @@ impl Rotation for Vector {
     }
 
     fn rotate_all(&mut self, x_theta: f32, y_theta: f32, z_theta: f32) {
-
         // Takes the origin vector "SELF" and rotating it by x, y, and z axis. 
-        let rotated_vector: Vector = Some(self.rotate_x(x_theta))
-            .and_then(|vec| Some(vec.rotate_y(y_theta)))
-            .and_then(|vec| Some(vec.rotate_z(z_theta))).unwrap();
-
-        // Change the vector's position.
-        self.x = rotated_vector.x;
-        self.y = rotated_vector.y;
-        self.z = rotated_vector.z;
+        *self = self.rotate_x(x_theta).rotate_y(y_theta).rotate_z(z_theta);
     }
 }
