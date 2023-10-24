@@ -108,7 +108,7 @@ fn render_cube() {
         // Renew buffers. 
         output_buffer = vec![vec![BG_CHAR; WIDTH]; HEIGHT]; 
         depth_checker = vec![vec![0; WIDTH]; HEIGHT];
-        std::thread:: sleep(Duration::from_millis(FRAME_DELAY));
+        std::thread::sleep(Duration::from_millis(FRAME_DELAY));
     }
 
 }
