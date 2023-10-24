@@ -82,11 +82,11 @@ fn render_cube() {
                 v5 = Vector {x:    cube_x as f32, y: -CUBE_LEN as f32, z:   -cube_y as f32 };
                 v6 = Vector {x:    cube_x as f32, y:  CUBE_LEN as f32, z:    cube_y as f32 };
 
-                parse_surface(v1, rotation_angles, '~', &mut depth_checker, &mut output_buffer);
-                parse_surface(v2, rotation_angles, '+', &mut depth_checker, &mut output_buffer);
-                parse_surface(v3, rotation_angles, '^', &mut depth_checker, &mut output_buffer);
-                parse_surface(v4, rotation_angles, '$', &mut depth_checker, &mut output_buffer);
-                parse_surface(v5, rotation_angles, '!', &mut depth_checker, &mut output_buffer);
+                parse_surface(v1, rotation_angles, '$', &mut depth_checker, &mut output_buffer);
+                parse_surface(v2, rotation_angles, '!', &mut depth_checker, &mut output_buffer);
+                parse_surface(v3, rotation_angles, '~', &mut depth_checker, &mut output_buffer);
+                parse_surface(v4, rotation_angles, '+', &mut depth_checker, &mut output_buffer);
+                parse_surface(v5, rotation_angles, '@', &mut depth_checker, &mut output_buffer);
                 parse_surface(v6, rotation_angles, '.', &mut depth_checker, &mut output_buffer);
             }
         }
