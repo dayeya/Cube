@@ -2,6 +2,8 @@
 
 pub mod vec; 
 use crate::vec::{Vector, Rotation};
+
+use std::thread;
 use std::time::Duration;
 
 // cube parameters.
@@ -108,7 +110,7 @@ fn render_cube() {
         // Renew buffers. 
         output_buffer = vec![vec![BG_CHAR; WIDTH]; HEIGHT]; 
         depth_checker = vec![vec![0; WIDTH]; HEIGHT];
-        std::thread:: sleep(Duration::from_millis(FRAME_DELAY));
+        thread::sleep(Duration::from_millis(FRAME_DELAY));
     }
 
 }
