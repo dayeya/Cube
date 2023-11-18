@@ -76,7 +76,6 @@ fn render_cube() {
         // Parse all 6 sides of the cube into the buffer.
         for cube_x in -CUBE_LEN..CUBE_LEN {
             for cube_y in -CUBE_LEN..CUBE_LEN {
-
                 v1 = Vector {x:    cube_x as f32, y:    cube_y as f32, z: -CUBE_LEN as f32 };
                 v2 = Vector {x:  CUBE_LEN as f32, y:    cube_y as f32, z:    cube_x as f32 };
                 v3 = Vector {x: -CUBE_LEN as f32, y:    cube_y as f32, z:   -cube_x as f32 };
