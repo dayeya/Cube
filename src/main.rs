@@ -28,7 +28,7 @@ fn parse_surface(
     angles: [f32; 3],
     ch: char, 
     z_buffer: &mut Vec<Vec<i32>>,
-    outpuf_buffer: &mut Vec<Vec<char>> 
+    output_buffer: &mut Vec<Vec<char>>
 ) 
 {
     let x_theta = angles[0];
@@ -38,8 +38,8 @@ fn parse_surface(
     // rotate the vector.
     origin_vector.rotate_all(x_theta, y_theta, z_theta);  
 
-    let w_offset = (WIDTH as usize) as f32 / 2.;
-    let h_offset = (HEIGHT as usize) as f32 / 2.;
+    let w_offset = WIDTH as f32 / 2.;
+    let h_offset = HEIGHT as f32 / 2.;
 
     // Calc one over Z.
     let ooz: f32 = 1.0 / (CUBE_DISTANCE + origin_vector.z);
@@ -55,7 +55,7 @@ fn parse_surface(
     if ooz > z_buffer[yp][xp] as f32 { 
         // Update the Z-buffer and plot the point.
         z_buffer[yp][xp] = ooz as i32;
-        outpuf_buffer[yp][xp] = ch;
+        output_buffer[yp][xp] = ch;
     }
 }
 
